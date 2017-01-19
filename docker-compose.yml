@@ -1,0 +1,32 @@
+version: '2'
+services:
+  brackets:
+    build:
+      context: .
+      dockerfile: dockerfiles/brackets.dockerfile
+    image: brackets:latest
+    ports:
+      - "8000:8000"
+
+  thimble:
+    build:
+      context: .
+      dockerfile: dockerfiles/thimble.dockerfile
+    image: thimble:latest
+    ports:
+      - "3500:3500"
+
+  postgres:
+    build:
+      context: .
+      dockerfile: dockerfiles/thimble-postgres.dockerfile
+    image: thimble-postgres:latest
+    ports:
+      - "5432:5432"
+
+  publish:
+      build:
+        context: .
+        dockerfile: dockerfiles/publish.dockerfile
+      image: publish:latest
+      env_file: ./envfiles/publish.env
