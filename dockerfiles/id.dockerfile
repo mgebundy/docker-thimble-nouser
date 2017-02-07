@@ -14,6 +14,4 @@ RUN npm install
 
 EXPOSE 1234
 
-CMD [ "node", "./scripts/create-tables.js", "&&",
-  "node", "./scripts/test-data.js", "&&",
-  "npm", "start" ]
+CMD [ "npm", "start" ]
