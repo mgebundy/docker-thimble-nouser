@@ -1,8 +1,6 @@
 FROM node:7.4.0
 MAINTAINER Mitchell Bundy <mitch@bundy.ca>
 
-ENV NODE_ENV production
-
 RUN git clone https://github.com/mozilla/id.webmaker.org
 
 WORKDIR id.webmaker.org
