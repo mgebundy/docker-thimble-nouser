@@ -1,14 +1,14 @@
 FROM node:7.4.0
 MAINTAINER Mitchell Bundy <mitch@bundy.ca>
 
-RUN git clone https://github.com/mgebundy/thimble.mozilla.org
+RUN git clone https://github.com/mozilla/thimble.mozilla.org --recursive
 
 WORKDIR thimble.mozilla.org
 
-RUN cp env.dist .env
+COPY ./envfiles/thimble.env .env
 
-RUN npm install && npm run localize
+RUN npm install
 
 EXPOSE 3500
 
-CMD ['npm', 'start']
+CMD [ "npm", "start" ]

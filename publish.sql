@@ -1,4 +1,6 @@
 CREATE ROLE publish WITH SUPERUSER LOGIN PASSWORD 'publish';
-ALTER ROLE publish SET search_path=publish;
 
-CREATE SCHEMA publish;
+CREATE DATABASE publish;
+GRANT ALL PRIVILEGES ON DATABASE publish TO publish;
+
+CREATE DATABASE webmaker_oauth_test;

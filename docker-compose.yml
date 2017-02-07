@@ -8,6 +8,47 @@ services:
     ports:
       - "8000:8000"
 
+  postgresql:
+    build:
+      context: .
+      dockerfile: dockerfiles/postgresql.dockerfile
+    image: thimble-postgresql:latest
+    ports:
+      - "5432:5432"
+
+  publish:
+    build:
+      context: .
+      dockerfile: dockerfiles/publish.dockerfile
+    image: publish:latest
+    env_file: ./envfiles/publish.env
+    ports:
+      - "8001:8001"
+      - "2016:2016"
+    # depends_on:
+    #   - postgresql
+
+  id:
+    build:
+      context: .
+      dockerfile: dockerfiles/id.dockerfile
+    image: id-webmaker:latest
+    ports:
+      - "1234:1234"
+      # depends_on:
+      #   - postgresql
+      #   - publish
+
+  login:
+    build:
+      context: .
+      dockerfile: dockerfiles/login.dockerfile
+    image: login-webmaker:latest
+    ports:
+      - "3000:3000"
+      # depends_on:
+      #   - id
+
   thimble:
     build:
       context: .
@@ -15,18 +56,3 @@ services:
     image: thimble:latest
     ports:
       - "3500:3500"
-
-  postgres:
-    build:
-      context: .
-      dockerfile: dockerfiles/thimble-postgres.dockerfile
-    image: thimble-postgres:latest
-    ports:
-      - "5432:5432"
-
-  publish:
-      build:
-        context: .
-        dockerfile: dockerfiles/publish.dockerfile
-      image: publish:latest
-      env_file: ./envfiles/publish.env
