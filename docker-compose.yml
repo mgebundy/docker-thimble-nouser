@@ -6,53 +6,61 @@ services:
       dockerfile: dockerfiles/brackets.dockerfile
     image: brackets:latest
     ports:
-      - "8000:8000"
+      - 8000:8000
 
   postgresql:
     build:
       context: .
       dockerfile: dockerfiles/postgresql.dockerfile
     image: thimble-postgresql:latest
+    volumes:
+      - pgdata:/var/lib/postgresql/data/pgdata
     ports:
-      - "5432:5432"
+      - 5432:5432
 
   publish:
     build:
       context: .
       dockerfile: dockerfiles/publish.dockerfile
     image: publish:latest
+    depends_on:
+      - postgresql
     env_file: ./envfiles/publish.env
     ports:
-      - "8001:8001"
-      - "2016:2016"
-    # depends_on:
-    #   - postgresql
+      - 8001:8001
+      - 2016:2016
 
   id:
     build:
       context: .
       dockerfile: dockerfiles/id.dockerfile
     image: id-webmaker:latest
+    depends_on:
+      - postgresql
+      - publish
+    env_file: ./envfiles/id.env
     ports:
-      - "1234:1234"
-      # depends_on:
-      #   - postgresql
-      #   - publish
+      - 1234:1234
 
   login:
     build:
       context: .
       dockerfile: dockerfiles/login.dockerfile
     image: login-webmaker:latest
+    depends_on:
+      - id
+    env_file: ./envfiles/login.env
     ports:
-      - "3000:3000"
-      # depends_on:
-      #   - id
+      - 3000:3000
 
   thimble:
     build:
       context: .
       dockerfile: dockerfiles/thimble.dockerfile
     image: thimble:latest
+    env_file: ./envfiles/thimble.env
     ports:
-      - "3500:3500"
+      - 3500:3500
+
+volumes:
+  pgdata:
